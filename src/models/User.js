@@ -12,7 +12,10 @@ export default class User extends Model {
             args: [2, 255],
             msg: 'Field "name" must be between 2 and 255 characters!',
           },
-          isAlpha: true,
+          is: {
+            args: /^(?!.*\d)(?!.*[~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]).*$/,
+            msg: 'Invalid name',
+          },
         },
       },
       email: {
@@ -43,8 +46,10 @@ export default class User extends Model {
     });
 
     this.addHook('beforeSave', async (user) => {
-      const salt = await bcryptjs.genSalt();
-      user.password_hash = await bcryptjs.hash(user.password, salt);
+      if (user.password) {
+        const salt = await bcryptjs.genSalt();
+        user.password_hash = await bcryptjs.hash(user.password, salt);
+      }
     });
 
     return this;
