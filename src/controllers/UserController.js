@@ -1,15 +1,6 @@
 import User from '../models/User';
 
 class UserController {
-  async index(req, res) {
-    try {
-      const users = await User.findAll({ attributes: ['id', 'name', 'email'] });
-      return res.status(200).json(users);
-    } catch (err) {
-      return res.status(400).json(null);
-    }
-  }
-
   async store(req, res) {
     try {
       const newUser = await User.create(req.body);
@@ -19,6 +10,15 @@ class UserController {
       return res.status(400).json({
         errors: err.errors.map((error) => error.message),
       });
+    }
+  }
+
+  async index(req, res) {
+    try {
+      const users = await User.findAll({ attributes: ['id', 'name', 'email'] });
+      return res.status(200).json(users);
+    } catch (err) {
+      return res.status(400).json(null);
     }
   }
 
