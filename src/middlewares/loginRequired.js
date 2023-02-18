@@ -31,6 +31,7 @@ export default async (req, res, next) => {
       });
     }
 
+    // these properties will be used in the methods that requires a logged in user.
     req.userId = id;
     req.userEmail = email;
 
