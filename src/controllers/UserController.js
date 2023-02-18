@@ -3,9 +3,7 @@ import User from '../models/User';
 class UserController {
   async index(req, res) {
     try {
-      const users = await User.findAll();
-      console.log('user id', req.userId);
-      console.log('user email', req.userEmail);
+      const users = await User.findAll({ attributes: ['id', 'name', 'email'] });
       return res.status(200).json(users);
     } catch (err) {
       return res.status(400).json(null);
@@ -15,7 +13,8 @@ class UserController {
   async store(req, res) {
     try {
       const newUser = await User.create(req.body);
-      return res.status(200).json(newUser);
+      const { id, name, email } = newUser;
+      return res.status(200).json({ id, name, email });
     } catch (err) {
       return res.status(400).json({
         errors: err.errors.map((error) => error.message),
@@ -26,7 +25,8 @@ class UserController {
   async show(req, res) {
     try {
       const user = await User.findByPk(req.params.id);
-      return res.status(200).json(user);
+      const { id, name, email } = user;
+      return res.status(200).json({ id, name, email });
     } catch (err) {
       return res.status(400).json(null);
     }
@@ -34,13 +34,7 @@ class UserController {
 
   async update(req, res) {
     try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ['Missing id'],
-        });
-      }
-
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
       if (!user) {
         return res.status(404).json({
           errors: ['User does not exists'],
@@ -48,7 +42,8 @@ class UserController {
       }
 
       const newUserData = await user.update(req.body);
-      return res.status(200).json(newUserData);
+      const { id, name, email } = newUserData;
+      return res.status(200).json({ id, name, email });
     } catch (err) {
       return res.status(400).json({
         errors: err.errors.map((error) => error.message),
@@ -58,13 +53,7 @@ class UserController {
 
   async delete(req, res) {
     try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ['Missing id'],
-        });
-      }
-
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
       if (!user) {
         return res.status(404).json({
           errors: ['User does not exists'],
