@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import multer from 'multer';
 import fileController from '../controllers/FileController';
 
 const router = new Router();
