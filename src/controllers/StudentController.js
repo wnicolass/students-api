@@ -1,4 +1,5 @@
 import Student from '../models/Student';
+import File from '../models/File';
 
 class StudentController {
   async store(req, res) {
@@ -13,7 +14,14 @@ class StudentController {
   }
 
   async index(req, res) {
-    const students = await Student.findAll();
+    const students = await Student.findAll({
+      attributes: ['id', 'name', 'surname', 'email', 'age', 'weight', 'height'],
+      order: [['id', 'DESC'], [File, 'id', 'DESC']],
+      include: {
+        model: File,
+        attributes: ['filename'],
+      },
+    });
     res.status(200).json(students);
   }
 
@@ -27,7 +35,14 @@ class StudentController {
         });
       }
 
-      const student = await Student.findByPk(id);
+      const student = await Student.findByPk(id, {
+        attributes: ['id', 'name', 'surname', 'email', 'age', 'weight', 'height'],
+        order: [['id', 'DESC'], [File, 'id', 'DESC']],
+        include: {
+          model: File,
+          attributes: ['filename'],
+        },
+      });
 
       if (!student) {
         return res.status(404).json({

@@ -13,18 +13,18 @@ class FileController {
           errors: [err.code],
         });
       }
-      const { student_id } = req.body;
 
-      if (!student_id) {
+      try {
+        const { student_id } = req.body;
+        const { originalname, filename } = req.file;
+        const picture = await File.create({ originalname, filename, student_id });
+
+        return res.status(200).json(picture);
+      } catch (error) {
         return res.status(400).json({
-          errors: ['Missing id'],
+          errors: ['Student does not exist'],
         });
       }
-
-      const { originalname, filename } = req.file;
-      const picture = await File.create({ originalname, filename, student_id });
-
-      return res.status(200).json(picture);
     });
   }
 }
