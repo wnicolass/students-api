@@ -19,7 +19,7 @@ class StudentController {
       order: [['id', 'DESC'], [File, 'id', 'DESC']],
       include: {
         model: File,
-        attributes: ['filename'],
+        attributes: ['url', 'filename'],
       },
     });
     res.status(200).json(students);
@@ -40,7 +40,7 @@ class StudentController {
         order: [['id', 'DESC'], [File, 'id', 'DESC']],
         include: {
           model: File,
-          attributes: ['filename'],
+          attributes: ['url', 'filename'],
         },
       });
 

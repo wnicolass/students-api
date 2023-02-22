@@ -1,4 +1,5 @@
 import { Sequelize, Model } from 'sequelize';
+import appConfig from '../config/app-config';
 
 export default class File extends Model {
   static init(sequelize) {
@@ -19,6 +20,12 @@ export default class File extends Model {
           notEmpty: {
             msg: 'Filed must be filled',
           },
+        },
+      },
+      url: {
+        type: Sequelize.VIRTUAL,
+        get() {
+          return `${appConfig.url}/images/${this.getDataValue('filename')}`;
         },
       },
     }, {

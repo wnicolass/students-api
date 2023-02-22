@@ -6,7 +6,6 @@ const upload = multer(multerConfig).single('picture');
 
 class FileController {
   store(req, res) {
-    // sending res and handling file filter errors
     return upload(req, res, async (err) => {
       if (err) {
         return res.status(400).json({
