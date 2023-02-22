@@ -6,14 +6,14 @@ const random = () => Math.floor(Math.random() * 10000 + 10000);
 export default {
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg') {
-      return cb(new multer.MulterError('Invalid type of file. File type must be JPG or PNG.'));
+      return cb(new multer.MulterError('Invalid file type. The file must be a JPG or PNG image.'));
     }
 
     return cb(null, true);
   },
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, resolve(__dirname, '..', '..', 'uploads'));
+      cb(null, resolve(__dirname, '..', '..', 'uploads', 'images'));
     },
     filename: (req, file, cb) => {
       cb(null, `${Date.now()}_${random()}${extname(file.originalname)}`);
