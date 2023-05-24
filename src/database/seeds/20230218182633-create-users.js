@@ -21,7 +21,7 @@ module.exports = {
           updated_at: new Date(),
         },
         {
-          name: 'Valentyna Boiko',
+          name: 'Valen Bravo',
           email: 'valen@gmail.com',
           password_hash: await bcrypt.hash('Valen1#', 10),
           created_at: new Date(),
